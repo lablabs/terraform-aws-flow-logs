@@ -5,7 +5,10 @@ locals {
 }
 
 module "log-bucket" {
-  source = "git::https://github.com/lablabs/terraform-aws-s3-log-storage.git?ref=opt-out-standard-transition"
+  # FIXME:
+  # https://github.com/cloudposse/terraform-aws-s3-log-storage/pull/27
+  # https://github.com/cloudposse/terraform-aws-s3-log-storage/pull/28
+  source = "git::https://github.com/lablabs/terraform-aws-s3-log-storage.git?ref=opt-out-standard-transition-fix-pub-access"
 
   namespace   = module.label.namespace
   environment = module.label.environment
