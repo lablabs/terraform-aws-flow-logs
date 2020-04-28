@@ -198,7 +198,7 @@ variable "cloudwatch_kms_generated" {
 variable "kms_description" {
   description = "The description of the key as viewed in AWS console"
   type        = string
-  default     = "KMS key to encrypt the logs delivered by SSM session manager"
+  default     = "KMS key to encrypt the logs delivered by vpc flow logs"
 }
 
 variable "kms_alias" {
