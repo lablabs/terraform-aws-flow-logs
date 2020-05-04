@@ -1,14 +1,6 @@
-output "flow_log_cloudwatch_attributes" {
-  description = "Map of the cloudwatch flow logs attributes, where key is source id (vpc, subnet, enis)"
-  value       = aws_flow_log.cloudwatch
-}
-
 output "flow_log_cloudwatch_ids" {
-  description = "Map of the cloudwatch flow logs ID, where key is source id (vpc, subnet, enis)"
-  value = {
-    for source, attributes in aws_flow_log.cloudwatch :
-    source => attributes.id
-  }
+  description = "List of the cloudwatch flow logs ID"
+  value       = local.log_cloudwatch_enabled ? aws_flow_log.cloudwatch.*.id : [""]
 }
 
 output "flow_log_cloudwatch_role_id" {
@@ -16,17 +8,9 @@ output "flow_log_cloudwatch_role_id" {
   value       = element(concat(aws_iam_role.cloudwatch.*.id, [""]), 0)
 }
 
-output "flow_log_bucket_attributes" {
-  description = "Map of the bucket flow logs attributes, where key is source id (vpc, subnet, enis)"
-  value       = aws_flow_log.bucket
-}
-
 output "flow_log_bucket_ids" {
-  description = "Map of the bucket flow logs ID, where key is source id (vpc, subnet, enis)"
-  value = {
-    for source, attributes in aws_flow_log.bucket :
-    source => attributes.id
-  }
+  description = "List of the bucket flow logs ID"
+  value       = local.log_bucket_enabled ? aws_flow_log.bucket.*.id : [""]
 }
 
 output "bucket_domain_name" {

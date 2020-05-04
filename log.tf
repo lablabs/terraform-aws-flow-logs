@@ -13,30 +13,23 @@ locals {
   log_source_type_vpc    = var.log_vpc_id != "" ? true : false
   log_source_type_subnet = length(var.log_subnet_ids) > 0 ? true : false
   log_source_type_eni    = length(var.log_eni_ids) > 0 ? true : false
-
-  log_source = var.enabled ? compact(concat(
-    [var.log_vpc_id],
-    var.log_subnet_ids,
-    var.log_eni_ids
-  )) : []
 }
 
-
 resource "aws_flow_log" "cloudwatch" {
-  for_each = toset([
-    for source in local.log_source :
-    source
-    if contains(var.log_destination_type, "cloud-watch-logs")
-  ])
+  count = var.enabled && local.log_cloudwatch_enabled ? (
+    length(var.log_vpc_id) +
+    length(var.log_subnet_ids) +
+    length(var.log_eni_ids)
+  ) : 0
 
   iam_role_arn = aws_iam_role.cloudwatch[0].arn
 
   log_destination_type = "cloud-watch-logs"
   log_destination      = local.log_destinations_cw
 
-  vpc_id    = local.log_source_type_vpc ? each.value : null
-  subnet_id = local.log_source_type_subnet ? each.value : null
-  eni_id    = local.log_source_type_eni ? each.value : null
+  vpc_id    = local.log_source_type_vpc ? var.log_vpc_id[count.index] : null
+  subnet_id = local.log_source_type_subnet ? var.log_subnet_ids[count.index] : null
+  eni_id    = local.log_source_type_eni ? var.log_eni_ids[count.index] : null
 
   log_format               = "${var.log_format} ${var.log_format_additional_fields}"
   traffic_type             = var.log_traffic_type
@@ -96,18 +89,18 @@ data "aws_iam_policy_document" "flow_log_cw" {
 }
 
 resource "aws_flow_log" "bucket" {
-  for_each = toset([
-    for source in local.log_source :
-    source
-    if contains(var.log_destination_type, "s3")
-  ])
+  count = var.enabled && local.log_bucket_enabled ? (
+    length(var.log_vpc_id) +
+    length(var.log_subnet_ids) +
+    length(var.log_eni_ids)
+  ) : 0
 
   log_destination_type = "s3"
   log_destination      = local.log_destinations_bucket
 
-  vpc_id    = local.log_source_type_vpc ? each.value : null
-  subnet_id = local.log_source_type_subnet ? each.value : null
-  eni_id    = local.log_source_type_eni ? each.value : null
+  vpc_id    = local.log_source_type_vpc ? var.log_vpc_id[count.index] : null
+  subnet_id = local.log_source_type_subnet ? var.log_subnet_ids[count.index] : null
+  eni_id    = local.log_source_type_eni ? var.log_eni_ids[count.index] : null
 
   log_format               = "${var.log_format} ${var.log_format_additional_fields}"
   traffic_type             = var.log_traffic_type
