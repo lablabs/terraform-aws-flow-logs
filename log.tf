@@ -1,8 +1,11 @@
 locals {
   log_destination_type = var.enabled ? var.log_destination_type : []
 
-  log_bucket_creation_enabled     = contains(var.log_destination_type, "s3") && var.bucket_generated ? true : false
-  log_cloudwatch_creation_enabled = contains(var.log_destination_type, "cloud-watch-logs") && var.cloudwatch_generated ? true : false
+  log_bucket_enabled     = contains(var.log_destination_type, "s3")
+  log_cloudwatch_enabled = contains(var.log_destination_type, "cloud-watch-logs")
+
+  log_bucket_creation_enabled     = local.log_bucket_enabled && var.bucket_generated ? true : false
+  log_cloudwatch_creation_enabled = local.log_cloudwatch_enabled && var.cloudwatch_generated ? true : false
 
   log_destinations_cw     = local.log_cloudwatch_creation_enabled ? local.cloudwatch_arn : var.cloudwatch_group_arn
   log_destinations_bucket = local.log_bucket_creation_enabled ? local.bucket_arn : var.bucket_arn
@@ -41,12 +44,12 @@ resource "aws_flow_log" "cloudwatch" {
   tags                     = module.label.tags
 
   depends_on = [
-    aws_cloudwatch_log_group.self
+    aws_cloudwatch_log_group.self,
   ]
 }
 
 resource "aws_iam_role" "cloudwatch" {
-  count = var.enabled && contains(var.log_destination_type, "cloud-watch-logs") ? 1 : 0
+  count = var.enabled && local.log_cloudwatch_creation_enabled ? 1 : 0
 
   name               = "${module.label.id}-cw"
   assume_role_policy = data.aws_iam_policy_document.flow_log_cw_assume[0].json
@@ -54,7 +57,7 @@ resource "aws_iam_role" "cloudwatch" {
 }
 
 data "aws_iam_policy_document" "flow_log_cw_assume" {
-  count = var.enabled && contains(var.log_destination_type, "cloud-watch-logs") ? 1 : 0
+  count = var.enabled && local.log_cloudwatch_creation_enabled ? 1 : 0
 
   statement {
     actions = ["sts:AssumeRole"]
@@ -67,7 +70,7 @@ data "aws_iam_policy_document" "flow_log_cw_assume" {
 }
 
 resource "aws_iam_role_policy" "flow_log_cw" {
-  count = var.enabled && contains(var.log_destination_type, "cloud-watch-logs") ? 1 : 0
+  count = var.enabled && local.log_cloudwatch_creation_enabled ? 1 : 0
 
   name   = "${module.label.id}-cw"
   role   = aws_iam_role.cloudwatch[0].id
@@ -75,7 +78,7 @@ resource "aws_iam_role_policy" "flow_log_cw" {
 }
 
 data "aws_iam_policy_document" "flow_log_cw" {
-  count = var.enabled && contains(var.log_destination_type, "cloud-watch-logs") ? 1 : 0
+  count = var.enabled && local.log_cloudwatch_creation_enabled ? 1 : 0
 
   statement {
     actions = [
