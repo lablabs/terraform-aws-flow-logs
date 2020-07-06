@@ -1,10 +1,10 @@
 output "flow_log_cloudwatch_ids" {
-  description = "List of the cloudwatch flow logs ID"
+  description = "List of the CloudWatch flow logs ID"
   value       = local.log_cloudwatch_enabled ? aws_flow_log.cloudwatch.*.id : [""]
 }
 
 output "flow_log_cloudwatch_role_id" {
-  description = "The flow log cloudwatch role ID"
+  description = "The flow log CloudWatch role ID"
   value       = element(concat(aws_iam_role.cloudwatch.*.id, [""]), 0)
 }
 
@@ -59,21 +59,21 @@ output "kms_policy_document" {
 }
 
 output "cloudwatch_group_name" {
-  description = "Session manager cloudwatch log group name"
+  description = "Session manager CloudWatch log group name"
   value       = element(concat(aws_cloudwatch_log_group.self.*.name, [""]), 0)
 }
 
 output "cloudwatch_group_arn" {
-  description = "Session manager cloudwatch log group arn"
+  description = "Session manager CloudWatch log group arn"
   value       = element(concat(aws_cloudwatch_log_group.self.*.arn, [""]), 0)
 }
 
 output "cloudwatch_group_retention_in_days" {
-  description = "Session manager cloudwatch log group retention days"
+  description = "Session manager CloudWatch log group retention days"
   value       = element(concat(aws_cloudwatch_log_group.self.*.retention_in_days, [""]), 0)
 }
 
 output "cloudwatch_group_kms_key_id" {
-  description = "Session manager cloudwatch log group kms key id"
+  description = "Session manager CloudWatch log group kms key id"
   value       = element(concat(aws_cloudwatch_log_group.self.*.kms_key_id, [""]), 0)
 }

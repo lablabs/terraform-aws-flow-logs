@@ -69,4 +69,3 @@ module "kms-key" {
   alias       = local.kms_alias
   policy      = join("", data.aws_iam_policy_document.kms.*.json)
 }
-

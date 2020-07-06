@@ -172,13 +172,13 @@ variable "bucket_kms_generated" {
 }
 
 variable "cloudwatch_generated" {
-  description = "Set to `true` to use auto generated cloudwatch log group"
+  description = "Set to `true` to use auto generated CloudWatch log group"
   type        = bool
   default     = false
 }
 
 variable "cloudwatch_group_arn" {
-  description = "The cloudwatch log group ARN"
+  description = "The CloudWatch log group ARN"
   type        = string
   default     = ""
 }
@@ -190,13 +190,13 @@ variable "cloudwatch_retention_in_days" {
 
 
 variable "cloudwatch_kms_master_key_arn" {
-  description = "The AWS KMS master key ARN used for the cloudwatch encryption"
+  description = "The AWS KMS master key ARN used for the CloudWatch encryption"
   type        = string
   default     = ""
 }
 
 variable "cloudwatch_kms_generated" {
-  description = "Set to `true` to use auto generated KMS CMK key for cloudwatch encryption"
+  description = "Set to `true` to use auto generated KMS CMK key for CloudWatch encryption"
   type        = bool
   default     = false
 }
