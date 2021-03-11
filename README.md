@@ -19,8 +19,28 @@ A terraform module to create AWS Flow log resources.
 
 | Name | Version |
 |------|---------|
-| terraform | ~> 0.12 |
-| aws | ~> 2.53 |
+| terraform | >= 0.13 |
+| aws | >= 2.0 |
+
+## Modules
+
+| Name | Source | Version |
+|------|--------|---------|
+| kms-key | cloudposse/kms-key/aws | 0.9.1 |
+| label | cloudposse/label/null | 0.24.1 |
+| log-bucket | cloudposse/s3-log-storage/aws | 0.20.0 |
+
+## Resources
+
+| Name |
+|------|
+| [aws_caller_identity](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) |
+| [aws_cloudwatch_log_group](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group) |
+| [aws_flow_log](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/flow_log) |
+| [aws_iam_policy_document](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) |
+| [aws_iam_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) |
+| [aws_iam_role_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy) |
+| [aws_region](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) |
 
 ## Inputs
 
@@ -30,7 +50,6 @@ A terraform module to create AWS Flow log resources.
 | bucket\_acl | The canned ACL to apply. We recommend log-delivery-write for compatibility with AWS services | `string` | `"log-delivery-write"` | no |
 | bucket\_arn | The bucket ARN of the logging destination | `string` | `""` | no |
 | bucket\_enable\_glacier\_transition | Glacier transition might just increase your bill. Set to false to disable lifecycle transitions to AWS Glacier. | `bool` | `false` | no |
-| bucket\_enable\_standard\_transition | Enables the transition to AWS STANDARD IA | `bool` | `false` | no |
 | bucket\_expiration\_days | Number of days after which to expunge the objects | `number` | `90` | no |
 | bucket\_force\_destroy | (Optional, Default:false ) A boolean that indicates all objects should be deleted from the bucket so that the bucket can be destroyed without error. These objects are not recoverable | `bool` | `false` | no |
 | bucket\_generated | Set to `true` to use auto generated bucket for log destination | `bool` | `false` | no |
@@ -41,6 +60,7 @@ A terraform module to create AWS Flow log resources.
 | bucket\_lifecycle\_rule\_enabled | Enable lifecycle events on this bucket | `bool` | `false` | no |
 | bucket\_lifecycle\_tags | Tags filter. Used to manage object lifecycle events | `map(string)` | `{}` | no |
 | bucket\_standard\_transition\_days | Number of days to persist in the standard storage tier before moving to the infrequent access tier | `number` | `30` | no |
+| bucket\_versioning\_enabled | A state of versioning. Versioning is a means of keeping multiple variants of an object in the same bucket | `bool` | `false` | no |
 | cloudwatch\_generated | Set to `true` to use auto generated CloudWatch log group | `bool` | `false` | no |
 | cloudwatch\_group\_arn | The CloudWatch log group ARN | `string` | `""` | no |
 | cloudwatch\_kms\_generated | Set to `true` to use auto generated KMS CMK key for CloudWatch encryption | `bool` | `false` | no |
@@ -83,7 +103,6 @@ A terraform module to create AWS Flow log resources.
 | kms\_key\_arn | Session manager log KMS key ARN |
 | kms\_key\_id | Session manager log KMS key ID |
 | kms\_policy\_document | The kms policy JSON document |
-
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 ## Contributing and reporting issues

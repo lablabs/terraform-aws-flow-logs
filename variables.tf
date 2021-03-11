@@ -108,6 +108,11 @@ variable "bucket_force_destroy" {
   default     = false
 }
 
+variable "bucket_versioning_enabled" {
+  type        = bool
+  default     = false
+  description = "A state of versioning. Versioning is a means of keeping multiple variants of an object in the same bucket"
+}
 variable "bucket_acl" {
   description = "The canned ACL to apply. We recommend log-delivery-write for compatibility with AWS services"
   type        = string
@@ -135,12 +140,6 @@ variable "bucket_lifecycle_tags" {
   description = "Tags filter. Used to manage object lifecycle events"
   type        = map(string)
   default     = {}
-}
-
-variable "bucket_enable_standard_transition" {
-  type        = bool
-  default     = false
-  description = "Enables the transition to AWS STANDARD IA"
 }
 
 variable "bucket_standard_transition_days" {
