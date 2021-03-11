@@ -61,6 +61,7 @@ A terraform module to create AWS Flow log resources.
 | bucket\_lifecycle\_rule\_enabled | Enable lifecycle events on this bucket | `bool` | `false` | no |
 | bucket\_lifecycle\_tags | Tags filter. Used to manage object lifecycle events | `map(string)` | `{}` | no |
 | bucket\_standard\_transition\_days | Number of days to persist in the standard storage tier before moving to the infrequent access tier | `number` | `30` | no |
+| bucket\_versioning\_enabled | A state of versioning. Versioning is a means of keeping multiple variants of an object in the same bucket | `bool` | `false` | no |
 | cloudwatch\_generated | Set to `true` to use auto generated CloudWatch log group | `bool` | `false` | no |
 | cloudwatch\_group\_arn | The CloudWatch log group ARN | `string` | `""` | no |
 | cloudwatch\_kms\_generated | Set to `true` to use auto generated KMS CMK key for CloudWatch encryption | `bool` | `false` | no |

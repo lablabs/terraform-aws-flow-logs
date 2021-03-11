@@ -27,6 +27,7 @@ module "log-bucket" {
   standard_transition_days  = var.bucket_standard_transition_days
   enable_glacier_transition = var.bucket_enable_glacier_transition
   glacier_transition_days   = var.bucket_glacier_transition_days
+  versioning_enabled        = var.bucket_versioning_enabled
 }
 
 data "aws_iam_policy_document" "bucket" {
