@@ -142,12 +142,6 @@ variable "bucket_lifecycle_tags" {
   default     = {}
 }
 
-variable "bucket_enable_standard_transition" {
-  type        = bool
-  default     = false
-  description = "Enables the transition to AWS STANDARD IA"
-}
-
 variable "bucket_standard_transition_days" {
   description = "Number of days to persist in the standard storage tier before moving to the infrequent access tier"
   default     = 30

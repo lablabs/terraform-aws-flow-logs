@@ -50,7 +50,6 @@ A terraform module to create AWS Flow log resources.
 | bucket\_acl | The canned ACL to apply. We recommend log-delivery-write for compatibility with AWS services | `string` | `"log-delivery-write"` | no |
 | bucket\_arn | The bucket ARN of the logging destination | `string` | `""` | no |
 | bucket\_enable\_glacier\_transition | Glacier transition might just increase your bill. Set to false to disable lifecycle transitions to AWS Glacier. | `bool` | `false` | no |
-| bucket\_enable\_standard\_transition | Enables the transition to AWS STANDARD IA | `bool` | `false` | no |
 | bucket\_expiration\_days | Number of days after which to expunge the objects | `number` | `90` | no |
 | bucket\_force\_destroy | (Optional, Default:false ) A boolean that indicates all objects should be deleted from the bucket so that the bucket can be destroyed without error. These objects are not recoverable | `bool` | `false` | no |
 | bucket\_generated | Set to `true` to use auto generated bucket for log destination | `bool` | `false` | no |
